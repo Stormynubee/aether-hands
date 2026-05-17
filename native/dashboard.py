@@ -41,17 +41,78 @@ class AetherDashboard(ctk.CTk):
         self.pulse_state = False
         self.update_pulse()
         
-        # Camera Switch Button
-        self.cam_button = ctk.CTkButton(
-            self,
-            text="CAM",
-            width=60,
-            height=30,
+        # Camera Navigation
+        self.cam_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.cam_frame.pack(pady=10)
+        
+        self.prev_button = ctk.CTkButton(
+            self.cam_frame,
+            text="PREV",
+            width=42,
+            height=25,
             fg_color="#FF9500",
             hover_color="#FFAA00",
-            command=self.switch_camera
+            font=("Orbitron", 10, "bold"),
+            command=lambda: self.switch_cam("prev")
         )
-        self.cam_button.pack(pady=10)
+        self.prev_button.pack(side="left", padx=2)
+        
+        self.next_button = ctk.CTkButton(
+            self.cam_frame,
+            text="NEXT",
+            width=42,
+            height=25,
+            fg_color="#FF9500",
+            hover_color="#FFAA00",
+            font=("Orbitron", 10, "bold"),
+            command=lambda: self.switch_cam("next")
+        )
+        self.next_button.pack(side="left", padx=2)
+
+        # Parameter Sliders
+        # SMOOTH Slider
+        self.smooth_label = ctk.CTkLabel(
+            self,
+            text="SMOOTH",
+            font=("Orbitron", 10),
+            text_color="#888888"
+        )
+        self.smooth_label.pack(pady=(10, 0))
+        
+        self.smooth_slider = ctk.CTkSlider(
+            self,
+            from_=0.0,
+            to=1.0,
+            width=80,
+            height=16,
+            button_color="#FF9500",
+            button_hover_color="#FFAA00",
+            command=self.update_params
+        )
+        self.smooth_slider.set(0.5)
+        self.smooth_slider.pack(pady=5)
+
+        # PINCH Slider
+        self.pinch_label = ctk.CTkLabel(
+            self,
+            text="PINCH",
+            font=("Orbitron", 10),
+            text_color="#888888"
+        )
+        self.pinch_label.pack(pady=(10, 0))
+        
+        self.pinch_slider = ctk.CTkSlider(
+            self,
+            from_=0.01,
+            to=0.1,
+            width=80,
+            height=16,
+            button_color="#FF9500",
+            button_hover_color="#FFAA00",
+            command=self.update_params
+        )
+        self.pinch_slider.set(0.03)
+        self.pinch_slider.pack(pady=5)
 
         # Gesture Feedback Container
         self.gesture_frame = ctk.CTkFrame(self, fg_color="transparent")
@@ -114,11 +175,19 @@ class AetherDashboard(ctk.CTk):
             lbl.configure(text_color=color)
             self.after(200, lambda: lbl.configure(text_color="#444444"))
 
-    def switch_camera(self):
-        """Sends a switch camera command to the engine via the bridge."""
+    def switch_cam(self, direction):
+        """Sends a camera switch command to the engine."""
         if self.bridge:
-            print("Dashboard: Requesting camera switch...")
-            self.bridge.to_engine.put("switch_camera")
+            print(f"Dashboard: Switching camera {direction}...")
+            self.bridge.to_engine.put({"type": "camera", "direction": direction})
+
+    def update_params(self, _=None):
+        """Sends updated parameter values to the engine."""
+        if self.bridge:
+            smoothing = self.smooth_slider.get()
+            pinch = self.pinch_slider.get()
+            self.bridge.to_engine.put({"type": "param", "key": "smoothing", "val": smoothing})
+            self.bridge.to_engine.put({"type": "param", "key": "pinch", "val": pinch})
 
     def update_pulse(self):
         """Changes the circle color to create a pulse effect."""
