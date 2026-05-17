@@ -19,14 +19,14 @@ class AetherDashboard(ctk.CTk):
         self.overrideredirect(True)
         
         # Background color
-        self.configure(fg_color="#0A0A0A") # Very dark grey
+        self.configure(fg_color="#050505") # Industrial Black
 
         # StatusPulse Canvas
         self.pulse_canvas = tk.Canvas(
             self, 
             width=20, 
             height=20, 
-            bg="#0A0A0A", 
+            bg="#050505", 
             highlightthickness=0
         )
         self.pulse_canvas.pack(pady=20)
@@ -34,7 +34,7 @@ class AetherDashboard(ctk.CTk):
         # Draw the circle
         self.pulse_circle = self.pulse_canvas.create_oval(
             4, 4, 16, 16, 
-            fill="#008888", 
+            fill="#FF9500", 
             outline=""
         )
         
@@ -47,8 +47,8 @@ class AetherDashboard(ctk.CTk):
             text="CAM",
             width=60,
             height=30,
-            fg_color="#008888",
-            hover_color="#00AAAA",
+            fg_color="#FF9500",
+            hover_color="#FFAA00",
             command=self.switch_camera
         )
         self.cam_button.pack(pady=10)
@@ -84,8 +84,8 @@ class AetherDashboard(ctk.CTk):
             to=1.0,
             width=80,
             height=16,
-            button_color="#008888",
-            button_hover_color="#00AAAA",
+            button_color="#FF9500",
+            button_hover_color="#FFAA00",
             command=self.change_transparency
         )
         self.alpha_slider.set(0.8)
@@ -110,7 +110,7 @@ class AetherDashboard(ctk.CTk):
         """Highlights a gesture label and resets it after a delay."""
         if gesture_code in self.gesture_labels:
             lbl = self.gesture_labels[gesture_code]
-            color = "#00FFFF" if gesture_code != "FS" else "#FF00FF"
+            color = "#FF9500" if gesture_code != "FS" else "#FF00FF"
             lbl.configure(text_color=color)
             self.after(200, lambda: lbl.configure(text_color="#444444"))
 
@@ -122,7 +122,7 @@ class AetherDashboard(ctk.CTk):
 
     def update_pulse(self):
         """Changes the circle color to create a pulse effect."""
-        new_color = "#00FFFF" if self.pulse_state else "#008888"
+        new_color = "#FFAA00" if self.pulse_state else "#FF9500"
         self.pulse_canvas.itemconfig(self.pulse_circle, fill=new_color)
         self.pulse_state = not self.pulse_state
         self.after(500, self.update_pulse)

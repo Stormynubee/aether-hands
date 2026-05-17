@@ -90,14 +90,14 @@ class GhostHUD:
             (0, 17)
         ]
 
-        # Draw skeleton lines (Neon Cyan)
+        # Draw skeleton lines (Industrial Amber)
         for start_idx, end_idx in connections:
             if start_idx < len(landmarks) and end_idx < len(landmarks):
                 x1, y1 = landmarks[start_idx]
                 x2, y2 = landmarks[end_idx]
                 self.canvas.create_line(
                     x1, y1, x2, y2, 
-                    fill="#00FFFF", 
+                    fill="#FF9500", 
                     width=2, 
                     tags="skeleton"
                 )
@@ -121,7 +121,7 @@ class GhostHUD:
         """Draws the persistent HUD elements."""
         margin = 40
         length = 60
-        color = "#00FFFF"
+        color = "#FF9500"
         
         # Brackets
         self.canvas.create_line(margin, margin, margin + length, margin, fill=color, width=2, tags="static")
