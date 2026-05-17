@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+env/
+.env
+
+# MediaPipe task models (Large files - though 7MB is OK, good practice to ignore if they can be downloaded)
+# aether-hands/native/hand_landmarker.task
+
+# Frontend artifacts
+aether-hands/frontend/node_modules/
+aether-hands/frontend/dist/
+
+# Superpowers temporary brainstorm files
+.superpowers/
