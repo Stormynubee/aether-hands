@@ -123,15 +123,25 @@ class GhostHUD:
         length = 60
         color = "#FF9500"
         
+        # Scanlines (HUD v2)
+        # Drawing ~270 lines for 1080p is fine for performance
+        for y in range(0, self.screen_height, 4):
+            self.canvas.create_line(
+                0, y, self.screen_width, y, 
+                fill="#111111", 
+                stipple="gray12",
+                tags="static"
+            )
+
         # Brackets
-        self.canvas.create_line(margin, margin, margin + length, margin, fill=color, width=2, tags="static")
-        self.canvas.create_line(margin, margin, margin, margin + length, fill=color, width=2, tags="static")
-        self.canvas.create_line(self.screen_width - margin, margin, self.screen_width - margin - length, margin, fill=color, width=2, tags="static")
-        self.canvas.create_line(self.screen_width - margin, margin, self.screen_width - margin, margin + length, fill=color, width=2, tags="static")
-        self.canvas.create_line(margin, self.screen_height - margin, margin + length, self.screen_height - margin, fill=color, width=2, tags="static")
-        self.canvas.create_line(margin, self.screen_height - margin, margin, self.screen_height - margin - length, fill=color, width=2, tags="static")
-        self.canvas.create_line(self.screen_width - margin, self.screen_height - margin, self.screen_width - margin - length, self.screen_height - margin, fill=color, width=2, tags="static")
-        self.canvas.create_line(self.screen_width - margin, self.screen_height - margin, self.screen_width - margin, self.screen_height - margin - length, fill=color, width=2, tags="static")
+        self.canvas.create_line(margin, margin, margin + length, margin, fill=color, width=4, tags="static")
+        self.canvas.create_line(margin, margin, margin, margin + length, fill=color, width=4, tags="static")
+        self.canvas.create_line(self.screen_width - margin, margin, self.screen_width - margin - length, margin, fill=color, width=4, tags="static")
+        self.canvas.create_line(self.screen_width - margin, margin, self.screen_width - margin, margin + length, fill=color, width=4, tags="static")
+        self.canvas.create_line(margin, self.screen_height - margin, margin + length, self.screen_height - margin, fill=color, width=4, tags="static")
+        self.canvas.create_line(margin, self.screen_height - margin, margin, self.screen_height - margin - length, fill=color, width=4, tags="static")
+        self.canvas.create_line(self.screen_width - margin, self.screen_height - margin, self.screen_width - margin - length, self.screen_height - margin, fill=color, width=4, tags="static")
+        self.canvas.create_line(self.screen_width - margin, self.screen_height - margin, self.screen_width - margin, self.screen_height - margin - length, fill=color, width=4, tags="static")
 
         self.canvas.create_text(
             margin + 10, margin + 20,
