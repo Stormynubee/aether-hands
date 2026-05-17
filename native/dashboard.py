@@ -53,7 +53,7 @@ class AetherDashboard(ctk.CTk):
             fg_color="#FF9500",
             hover_color="#FFAA00",
             font=("Orbitron", 10, "bold"),
-            command=lambda: self.switch_cam("prev")
+            command=lambda: self.switch_cam(-1)
         )
         self.prev_button.pack(side="left", padx=2)
         
@@ -65,7 +65,7 @@ class AetherDashboard(ctk.CTk):
             fg_color="#FF9500",
             hover_color="#FFAA00",
             font=("Orbitron", 10, "bold"),
-            command=lambda: self.switch_cam("next")
+            command=lambda: self.switch_cam(1)
         )
         self.next_button.pack(side="left", padx=2)
 

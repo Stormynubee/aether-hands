@@ -22,6 +22,17 @@ class AetherEngine:
         self.pinch_threshold = 0.035 # Slightly tighter threshold
         pyautogui.PAUSE = 0
 
+    def set_param(self, key, val):
+        """
+        Update engine parameters dynamically.
+        """
+        if key == "smoothing":
+            self.alpha = val
+            print(f"Engine: Smoothing (alpha) set to {val}")
+        elif key == "pinch":
+            self.pinch_threshold = val
+            print(f"Engine: Pinch Threshold set to {val}")
+
     def _get_distance(self, p1, p2):
         return math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
 

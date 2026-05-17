@@ -50,7 +50,33 @@ def run_vision_loop(bridge):
             # Check for messages from the Bridge (UI -> Engine)
             try:
                 msg = bridge.to_engine.get_nowait()
-                if msg == "switch_camera":
+                if isinstance(msg, dict):
+                    msg_type = msg.get("type")
+                    if msg_type == "camera":
+                        direction = msg.get("direction", 1)
+                        if direction == "next": direction = 1
+                        elif direction == "prev": direction = -1
+                        
+                        try:
+                            current_camera_index = max(0, current_camera_index + int(direction))
+                        except (ValueError, TypeError):
+                            current_camera_index += 1
+                            
+                        print(f"Switching to camera index: {current_camera_index}")
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        cap = cv2.VideoCapture(current_camera_index)
+                        if not cap.isOpened():
+                            print(f"Camera {current_camera_index} not found. Resetting to 0.")
+                            current_camera_index = 0
+                            cap = cv2.VideoCapture(current_camera_index)
+                        time.sleep(0.5)
+                    elif msg_type == "param":
+                        key = msg.get("key")
+                        val = msg.get("val")
+                        if key is not None and val is not None:
+                            engine.set_param(key, val)
+                elif msg == "switch_camera": # Backward compatibility
                     current_camera_index += 1
                     print(f"Switching to camera index: {current_camera_index}")
                     cap.release()
@@ -65,8 +91,10 @@ def run_vision_loop(bridge):
                     show_debug = not show_debug
                     if not show_debug:
                         cv2.destroyAllWindows()
-            except: # Queue empty
-                pass
+            except Exception as e: # Queue empty or processing error
+                if not isinstance(e, type(None)) and "get_nowait" not in str(e):
+                    # print(f"Bridge Message Error: {e}") # Silent unless needed
+                    pass
 
             success, frame = cap.read()
             if not success:
